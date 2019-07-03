@@ -40,8 +40,8 @@ RUN curl -k -fsSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/bi
     && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
     && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
-# Copy TU settings.xml 
-ADD maven_settings.xml $MAVEN_HOME/conf/settings.xml
+# Copy custom settings.xml if connecting to different repository  
+#ADD maven_settings.xml $MAVEN_HOME/conf/settings.xml
  
 # Add  chrome for protractor tests
 RUN wget --no-check-certificate -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -52,8 +52,8 @@ RUN mkdir /usr/lib/nodejs \
     && curl -k -fsSL "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" | tar xz --directory "/usr/lib/nodejs" \
     && mv /usr/lib/nodejs/node-v$NODE_VERSION-linux-x64 /usr/lib/nodejs/node
 
-# Globalconfig to TU Artifactory and Token
-ADD npmrc /usr/lib/nodejs/node/etc/npmrc
+# Copy custom nprmc file if connecting to different npm registry 
+# ADD npmrc /usr/lib/nodejs/node/etc/npmrc
 
 # Set PATH
 ENV NODEJS_HOME="/usr/lib/nodejs/node"
