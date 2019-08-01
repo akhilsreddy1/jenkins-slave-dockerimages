@@ -4,8 +4,8 @@ Jenkins Docker Slave Images for building various applications
 ## Below packages are installed  , override versions using docker build arguments for using different versions. 
 
 ```
-## Maven 3.6.1
-## Node 10.9.0
+Maven 3.6.1
+Node 10.9.0
 ## Angular CLI
 ## Python3
 ## Pip3
