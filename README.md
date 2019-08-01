@@ -6,15 +6,19 @@ Jenkins Docker Slave Images for building various applications
 ```
 Maven 3.6.1
 Node 10.9.0
-## Angular CLI
-## Python3
-## Pip3
-## Docker client libraries
-## Ansible
-## Kubectl - stable
-## Helm - stable
-## Terraform - 0.12.6
-## Packer - 1.4.2
-## Azul jdk 8=8.40.0.25
-## aws-cli
+Angular CLI
+Python3
+Pip3
+Docker client libraries
+Ansible
+Kubectl - stable
+Helm - stable
+Terraform - 0.12.6
+Packer - 1.4.2
+Azul jdk 8=8.40.0.25
+aws-cli
+
 ```
+
+
+
