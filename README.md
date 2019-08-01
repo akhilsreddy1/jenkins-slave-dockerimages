@@ -13,5 +13,5 @@ Jenkins Docker Slave Images for building various applications
 - `Kubectl - stable`
 - `Helm - stable`
 - `Terraform - 0.12.6`
-- `Packer - 1.4.2'
-- `Azul jdk 8=8.40.0.25'
+- `Packer - 1.4.2`
+- `Azul jdk 8=8.40.0.25`
