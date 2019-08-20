@@ -26,7 +26,7 @@ RUN apt-get --allow-unauthenticated update && apt-get --allow-unauthenticated up
     apt-get --allow-unauthenticated install --no-install-recommends  -yq build-essential openssl openssh-client apt-transport-https gnupg2\
     ca-certificates software-properties-common apt-utils locales libapr1 curl wget jq git vim bash\
     libtcnative-1 python3.6 python3-pip python3-setuptools \
-    gettext unzip iputils-ping file
+    gettext unzip iputils-ping file net-tools
 
 # Add Docker repos
 RUN curl -k -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
