@@ -1,4 +1,3 @@
-
 FROM ubuntu
 
 ENV MAVEN_HOME /usr/share/maven
@@ -26,7 +25,7 @@ RUN apt-get --allow-unauthenticated update && apt-get --allow-unauthenticated up
     apt-get --allow-unauthenticated install --no-install-recommends  -yq build-essential openssl openssh-client apt-transport-https gnupg2\
     ca-certificates software-properties-common apt-utils locales libapr1 curl wget jq git vim bash\
     libtcnative-1 python3.6 python3-pip python3-setuptools \
-    gettext unzip iputils-ping file net-tools
+    gettext unzip iputils-ping file net-tools 
 
 # Add Docker repos
 RUN curl -k -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -49,16 +48,12 @@ RUN curl -k -fsSL http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/bi
 RUN wget --no-check-certificate -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
 
-# Install Node 
+# Install node.js https://nodejs.org/en/download/ 
 RUN mkdir /usr/lib/nodejs \
     && curl -k -fsSL "http://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" | tar xz --directory "/usr/lib/nodejs" \
     && mv /usr/lib/nodejs/node-v$NODE_VERSION-linux-x64 /usr/lib/nodejs/node
 
-# Set PATH
-#ENV NPM_PACKAGES="${HOME}/.npm-packages"
-ENV PATH="$NODEJS_HOME/bin:$PATH"
-
-RUN npm install -g @angular/cli --unsafe
+ENV PATH="$NODEJS_HOME/bin:/home/jenkins/.global-modules/bin:$PATH$PATH"
 
 # Install Kubectl
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
@@ -77,7 +72,7 @@ RUN echo "==> Adding hosts for convenience..."  && \
 
 ADD ansible.cfg /etc/ansible/ansible.cfg
 
-# Install helm
+# Install Helm
 RUN curl -kL https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar xz \ 
    && mv linux-amd64/helm /usr/bin/helm  \
    && rm -rf linux-amd64 
@@ -97,16 +92,9 @@ RUN wget --quiet -nc  https://releases.hashicorp.com/packer/${PACKER_VERSION}/pa
 RUN pip3 install awscli boto3
 RUN mkdir ~/.aws && touch ~/.aws/credentials
 
-# Copy custom settings.xml 
-#ADD maven_settings.xml $MAVEN_HOME/conf/settings.xml
-
-# Custom npm config 
-# ADD npmrc /usr/lib/nodejs/node/etc/npmrc
-
-
 # Install Slave jenkins jars 
 
-RUN curl --create-dirs -fsSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${JENKINS_SLAVE_VERSION}/remoting-${JENKINS_SLAVE_VERSION}.jar \
+RUN curl -k --create-dirs -fsSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${JENKINS_SLAVE_VERSION}/remoting-${JENKINS_SLAVE_VERSION}.jar \
   && chmod 755 /usr/share/jenkins \
   && chmod 644 /usr/share/jenkins/slave.jar
 
@@ -117,6 +105,20 @@ RUN mkdir /home/jenkins/.jenkins && mkdir -p ${AGENT_WORKDIR} && chmod 777 /usr/
 VOLUME /home/jenkins/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/jenkins
+
+# Adhoc Commands
+
+#RUN apt-get --allow-unauthenticated  update && apt-get --allow-unauthenticated  -yq install file net-tools
+
+RUN mkdir ~/.global-modules && npm config set prefix "~/.global-modules"
+
+RUN npm install -g @angular/cli --unsafe
+
+# Custom settings.xml 
+#ADD maven_settings.xml $MAVEN_HOME/conf/settings.xml
+
+# Custom npmrc
+#ADD npmrc /home/jenkins/.npmrc
 
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  
