@@ -19,5 +19,13 @@ Below packages are installed  , override versions using docker build arguments f
 | Packer |1.4.2 |
 | azul jdk| 8=8.40.0.25 |
 | aws-cli| Stable|
-| Utils like jq,envsubst |
+
+## Build Image  
+
+```
+docker build -t  registry.io/jenkins-agent:latest -f Dockerfile .
+
+docker push  registry.iojenkins-agent:latest 
+```
+
 
