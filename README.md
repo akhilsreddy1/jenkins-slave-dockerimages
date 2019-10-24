@@ -25,7 +25,7 @@ Below packages are installed  , override versions using docker build arguments f
 ```
 docker build -t  registry.io/jenkins-agent:latest -f Dockerfile .
 
-docker push  registry.iojenkins-agent:latest 
+docker push  registry.io/jenkins-agent:latest 
 ```
 
 
